@@ -440,6 +440,15 @@ tr:last-child td {
   color: #dc2626;
 }
 
+/* Highlight baris kunci yang sedang dipakai */
+tr.row-used {
+  background: #fff7ed;
+}
+
+tr.row-used td {
+  border-bottom-color: #fed7aa;
+}
+
 /* Tombol Keluar di tabel Daftar Kunci */
 .checkout-btn {
   border: 0;
