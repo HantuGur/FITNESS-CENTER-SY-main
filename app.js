@@ -4,7 +4,7 @@
    File ini dipakai oleh index.html
    =============================== */
 
-const DEFAULT_SCRIPT_PLACEHOLDER = "PASTE_APPS_SCRIPT_WEB_APP_URL_HERE";
+const DEFAULT_SCRIPT_PLACEHOLDER = "https://script.google.com/macros/s/AKfycbyMqPQrCg6eBxtNNaCtp_0p7OsmzVExyhD_36oZeiRpb9oQWEl57rDCiHhcUY836NXlcA/exec";
 
 const state = {
   keys: [],
