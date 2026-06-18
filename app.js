@@ -4,7 +4,7 @@
    File ini dipakai oleh index.html
    =============================== */
 
-const DEFAULT_SCRIPT_PLACEHOLDER = "https://script.google.com/macros/s/AKfycbxfh3Omf3NXrwFqn8lN_vZSGESPHdIJUpfuKariST8MtLG5XixrK2yq5a72nVasgpFztQ/exec";
+const DEFAULT_SCRIPT_PLACEHOLDER = "https://script.google.com/macros/s/AKfycbx8PArWfNKq7QuwsNAkEsJfpvOwTqnKzUF2UtIHDG45VGW8NNSHw3ebiRuNwCS6ocm8Hw/exec";
 
 const state = {
   keys: [],
@@ -491,6 +491,8 @@ function renderCurrentTab() {
 }
 
 // renderKeys: tampilkan kolom Jenis di tabel, tombol Keluar bawa keyType.
+// Tombol Keluar SELALU muncul saat status Dipakai.
+// Saat status Kosong, kolom Aksi menampilkan "-" karena tidak ada yang perlu di-checkout.
 function renderKeys() {
   els.tableHead.innerHTML = `
     <tr>
@@ -516,32 +518,36 @@ function renderKeys() {
   });
 
   els.tableBody.innerHTML = rows.map((item) => {
-    const status = String(item.status || "").toLowerCase();
-    const isUsed = status === "dipakai";
+    const statusRaw = String(item.status || "").trim();
+    const statusLower = statusRaw.toLowerCase();
+    const isUsed = statusLower === "dipakai";
+
     const keyNumber = escapeHtml(item.keyNumber || "");
     const keyType = escapeHtml(item.keyType || "Cowo");
     const customerName = escapeHtml(item.customerName || "");
 
+    // Baris kunci yang dipakai dikasih highlight supaya keliatan
+    const rowClass = isUsed ? ' class="row-used"' : "";
+
     return `
-      <tr>
+      <tr${rowClass}>
         <td>${keyTypeBadge(item.keyType || "Cowo")}</td>
         <td><b>${escapeHtml(item.keyNumber || "-")}</b></td>
-        <td>${statusBadge(item.status)}</td>
+        <td>${statusBadge(statusRaw)}</td>
         <td>${escapeHtml(item.customerName || "-")}</td>
         <td>${escapeHtml(item.checkInTime || "-")}</td>
         <td>${escapeHtml(item.updatedAt || "-")}</td>
         <td>
-          ${
-            isUsed
-              ? `<button
-                    type="button"
-                    class="checkout-btn"
-                    data-action="checkout"
-                    data-key-number="${keyNumber}"
-                    data-key-type="${keyType}"
-                    data-customer-name="${customerName}"
-                  >Keluar</button>`
-              : `<span class="muted">-</span>`
+          ${isUsed
+            ? `<button
+                  type="button"
+                  class="checkout-btn"
+                  data-action="checkout"
+                  data-key-number="${keyNumber}"
+                  data-key-type="${keyType}"
+                  data-customer-name="${customerName}"
+                >Keluar</button>`
+            : `<span class="muted">-</span>`
           }
         </td>
       </tr>
