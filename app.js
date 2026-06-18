@@ -643,18 +643,14 @@ function getSearchText() {
 }
 
 function keyTypeBadge(keyType) {
-  const value = String(keyType || "Cowo");
-  const lower = value.toLowerCase();
+  const lower = String(keyType || "").trim().toLowerCase();
 
-  if (lower === "cewe" || lower === "cewek" || lower === "wanita" || lower === "perempuan") {
+  if (["cewe", "cewek", "wanita", "perempuan", "female"].includes(lower)) {
     return `<span class="key-type cewe">Cewe</span>`;
   }
 
-  if (lower === "cowo" || lower === "cowok" || lower === "pria" || lower === "laki-laki") {
-    return `<span class="key-type cowo">Cowo</span>`;
-  }
-
-  return `<span class="key-type">${escapeHtml(value)}</span>`;
+  // Default & semua varian cowo -> badge Cowo (grafit), selaras dengan sheet.
+  return `<span class="key-type cowo">Cowo</span>`;
 }
 
 function statusBadge(status) {
