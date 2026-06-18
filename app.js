@@ -1,9 +1,10 @@
 /* ===============================
    FRONTEND SISTEM ADMIN GYM
+   PATCH: PISAH KUNCI COWO & CEWE
    File ini dipakai oleh index.html
    =============================== */
 
-const DEFAULT_SCRIPT_PLACEHOLDER = "PASTE_APPS_SCRIPT_WEB_APP_URL_HERE";
+const DEFAULT_SCRIPT_PLACEHOLDER = "https://script.google.com/macros/s/AKfycbxfh3Omf3NXrwFqn8lN_vZSGESPHdIJUpfuKariST8MtLG5XixrK2yq5a72nVasgpFztQ/exec";
 
 const state = {
   keys: [],
@@ -312,7 +313,7 @@ function handleSubmit(event) {
     admin: els.adminInput.value.trim(),
     customerName: els.customerInput.value.trim(),
     keyNumber: els.keyInput.value.trim(),
-    keyType: els.keyTypeInput.value,
+    keyType: els.keyTypeInput.value,   // "Cowo" atau "Cewe"
     status: els.statusInput.value
   };
 
@@ -424,6 +425,7 @@ function handleTableAction(event) {
   }
 }
 
+// quickCheckout: selalu kirim keyType supaya backend tahu kunci mana yang di-checkout.
 function quickCheckout(keyNumber, keyType = "Cowo", customerName = "") {
   if (state.saving) return;
 
@@ -488,6 +490,7 @@ function renderCurrentTab() {
   renderKeys();
 }
 
+// renderKeys: tampilkan kolom Jenis di tabel, tombol Keluar bawa keyType.
 function renderKeys() {
   els.tableHead.innerHTML = `
     <tr>
@@ -585,6 +588,7 @@ function renderMembers() {
   toggleEmpty(rows.length === 0);
 }
 
+// renderLogs: tampilkan kolom Jenis di tabel audit.
 function renderLogs() {
   els.tableHead.innerHTML = `
     <tr>
@@ -640,7 +644,11 @@ function keyTypeBadge(keyType) {
     return `<span class="key-type cewe">Cewe</span>`;
   }
 
-  return `<span class="key-type cowo">Cowo</span>`;
+  if (lower === "cowo" || lower === "cowok" || lower === "pria" || lower === "laki-laki") {
+    return `<span class="key-type cowo">Cowo</span>`;
+  }
+
+  return `<span class="key-type">${escapeHtml(value)}</span>`;
 }
 
 function statusBadge(status) {
